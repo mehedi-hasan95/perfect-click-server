@@ -62,6 +62,19 @@ async function run () {
             res.send(result);
         })
 
+        // Find a spesic Service data
+        app.get('/sns', async(req, res) => {
+            let query = {}
+            if(req.query.service) {
+                query = {
+                    service: req.query.service
+                }
+            }
+            const cursor = weddingReviews.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
 
 
 
