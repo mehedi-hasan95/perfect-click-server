@@ -49,6 +49,19 @@ async function run () {
             res.send(result);
         })
 
+        // Find a spesic person data
+        app.get('/reviews', async(req, res) => {
+            let query = {}
+            if(req.query.email) {
+                query = {
+                    email: req.query.email
+                }
+            }
+            const cursor = weddingReviews.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
 
 
 
