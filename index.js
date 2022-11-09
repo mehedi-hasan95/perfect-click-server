@@ -85,6 +85,14 @@ async function run () {
             res.send(result);
         })
 
+        // Delete a Review 
+        app.delete('/reviews/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await weddingReviews.deleteOne(query);
+            res.send(result);
+        })
+
 
 
 
