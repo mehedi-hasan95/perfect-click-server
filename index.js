@@ -31,7 +31,7 @@ async function run () {
 
         app.get('/limit', async(req, res) =>{
             const query = {}
-            const cursor = weddingCollection.find(query);
+            const cursor = weddingCollection.find(query).sort({_id:-1});
             const products = await cursor.limit(3).toArray();
             res.send(products);
         });
