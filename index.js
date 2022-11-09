@@ -94,6 +94,29 @@ async function run () {
         })
 
 
+        // Find a review to update
+        app.get('/reviews/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await weddingReviews.findOne(query);
+            res.send(result);
+        })
+
+        // Update a review 
+        app.put('/reviews/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const body = req.body;
+            const options = { upsert: true };
+            const updateReview = {
+                $set: {
+                    message: body.message,
+                }
+            }
+            const result = await weddingReviews.updateOne(query, updateReview, options);
+            res.send(result);
+            
+        })
 
 
     }
