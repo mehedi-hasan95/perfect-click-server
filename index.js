@@ -67,7 +67,7 @@ async function run () {
                     email: req.query.email
                 }
             }
-            const cursor = weddingReviews.find(query);
+            const cursor = weddingReviews.find(query).sort({_id:-1});
             const result = await cursor.toArray();
             res.send(result);
         })
