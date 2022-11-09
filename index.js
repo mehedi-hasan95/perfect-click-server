@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express()
+const jwt = require('jsonwebtoken');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 require('dotenv').config();
@@ -123,6 +124,13 @@ async function run () {
             const result = await weddingReviews.updateOne(query, updateReview, options);
             res.send(result);
             
+        })
+
+        // JWT Token
+        app.post('/jwt', (req, res)=> {
+            const body = req.body;
+            const token = jwt.sign(body, process.env.JWT_SECRET_CODE, {expiresIn: '8h'});
+            res.send({token});
         })
 
 
