@@ -23,6 +23,22 @@ app.get('/', (req, res) => {
 const uri = "mongodb+srv://weddingPhotography:rSiuCswBf35xqqOv@cluster0.k4gmzpi.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+// JWT 
+function verifyJwt (req, res, next) {
+    const jwtHdader = req.headers.authorization;
+    if(!jwtHdader) {
+        return res.status(401).send({message: 'Unauthorize access'});
+    }
+    const token = jwtHdader.split(' ')[1];
+    jwt.verify(token, process.env.JWT_SECRET_CODE, function(err, decoded){
+        if(err) {
+            return res.status(401).send({message: 'Unauthorize access'});
+        }
+        req.decoded = decoded;
+        next();
+    })
+}
+
 async function run () {
     try {
         const weddingCollection = client.db("wedding").collection("details");
@@ -68,7 +84,14 @@ async function run () {
         })
 
         // Find a spesic person data
-        app.get('/reviews', async(req, res) => {
+        app.get('/reviews', verifyJwt, async(req, res) => {
+            
+
+            const decoded = req.decoded;
+            if(decoded.email !== req.query.email) {
+                return res.status(403).send({message: "Forbidden Access"})
+            }
+
             let query = {}
             if(req.query.email) {
                 query = {
