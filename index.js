@@ -27,6 +27,16 @@ async function run () {
         const weddingCollection = client.db("wedding").collection("details");
         const weddingReviews = client.db("wedding").collection("reviews");
 
+        // For HomePage 
+
+        app.get('/limit', async(req, res) =>{
+            const query = {}
+            const cursor = weddingCollection.find(query);
+            const products = await cursor.limit(3).toArray();
+            res.send(products);
+        });
+
+        // End Homepage 
 
         app.get('/services', async(req, res) => {
             const query = {};
