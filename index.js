@@ -36,6 +36,13 @@ async function run () {
             res.send(products);
         });
 
+        // Add service form Client side 
+        app.post('/services', async(req, res) => {
+            const service = req.body;
+            const result = await weddingCollection.insertOne(service);
+            res.send(result);
+        })
+
         // End Homepage 
 
         app.get('/services', async(req, res) => {
